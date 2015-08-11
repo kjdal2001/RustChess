@@ -1,30 +1,57 @@
+use ansi_term::Colour;
+use ansi_term::Colour::*;
+
 enum SquareColor {
     Black,
     White,
 }
 
 impl SquareColor {
-    fn to_string( &self ) -> String {
+    fn get_background( &self ) -> Colour {
         match *self {
             SquareColor::Black => {
-                "Black".to_string()
+                Green
             }
             SquareColor::White => {
-                "White".to_string()
+                Yellow
             }
         }
     }
 }
 
-enum Cell {
-    Empty,
+enum Piece {
+    None,
+    Pawn,
+    Rook,
+    Knight,
+    Bishop,
+    Queen,
+    King,
 }
 
-impl Cell {
-    fn to_string( &self ) -> String {
+impl Piece {
+    fn text( &self ) -> &str {
         match *self {
-            Cell::Empty => {
-                "Empty".to_string()
+            Piece::None => {
+                " "
+            }
+            Piece::Pawn => {
+                "P"
+            }
+            Piece::Rook => {
+                "R"
+            }
+            Piece::Knight => {
+                "N"
+            }
+            Piece::Bishop => {
+                "B"
+            }
+            Piece::Queen => {
+                "Q"
+            }
+            Piece::King => {
+                "K"
             }
         }
     }
@@ -32,19 +59,25 @@ impl Cell {
 
 struct Square {
     color: SquareColor,
-    cell: Cell,
+    piece: Piece,
 }
 
 impl Square {
-    fn new( color: SquareColor ) -> Square {
+    fn new( color: SquareColor, piece: Piece ) -> Square {
         Square {
             color: color,
-            cell: Cell::Empty,
+            piece: piece,
         }
     }
 
     fn to_string( &self ) -> String {
-        format!( "This is a square {} {}", self.color.to_string(), self.cell.to_string() ).to_string()
+        let background_color = self.color.get_background();
+        let text_color = Red;
+
+        format!( "{}{}{}",
+                 text_color.on( background_color ).paint( " " ),
+                 text_color.on( background_color ).paint( &self.piece.text() ),
+                 text_color.on( background_color ).paint( " " ) )
     }
 }
 
@@ -55,78 +88,82 @@ pub struct Board {
 impl Board {
     pub fn new() -> Board {
         Board {
-            squares: [ [ Square::new( SquareColor::Black ),
-                         Square::new( SquareColor::White ),
-                         Square::new( SquareColor::Black ),
-                         Square::new( SquareColor::White ),
-                         Square::new( SquareColor::Black ),
-                         Square::new( SquareColor::White ),
-                         Square::new( SquareColor::Black ),
-                         Square::new( SquareColor::White ) ],
-                       [ Square::new( SquareColor::White ),
-                         Square::new( SquareColor::Black ),
-                         Square::new( SquareColor::White ),
-                         Square::new( SquareColor::Black ),
-                         Square::new( SquareColor::White ),
-                         Square::new( SquareColor::Black ),
-                         Square::new( SquareColor::White ),
-                         Square::new( SquareColor::Black ) ],
-                       [ Square::new( SquareColor::Black ),
-                         Square::new( SquareColor::White ),
-                         Square::new( SquareColor::Black ),
-                         Square::new( SquareColor::White ),
-                         Square::new( SquareColor::Black ),
-                         Square::new( SquareColor::White ),
-                         Square::new( SquareColor::Black ),
-                         Square::new( SquareColor::White ) ],
-                       [ Square::new( SquareColor::White ),
-                         Square::new( SquareColor::Black ),
-                         Square::new( SquareColor::White ),
-                         Square::new( SquareColor::Black ),
-                         Square::new( SquareColor::White ),
-                         Square::new( SquareColor::Black ),
-                         Square::new( SquareColor::White ),
-                         Square::new( SquareColor::Black ) ],
-                       [ Square::new( SquareColor::Black ),
-                         Square::new( SquareColor::White ),
-                         Square::new( SquareColor::Black ),
-                         Square::new( SquareColor::White ),
-                         Square::new( SquareColor::Black ),
-                         Square::new( SquareColor::White ),
-                         Square::new( SquareColor::Black ),
-                         Square::new( SquareColor::White ) ],
-                       [ Square::new( SquareColor::White ),
-                         Square::new( SquareColor::Black ),
-                         Square::new( SquareColor::White ),
-                         Square::new( SquareColor::Black ),
-                         Square::new( SquareColor::White ),
-                         Square::new( SquareColor::Black ),
-                         Square::new( SquareColor::White ),
-                         Square::new( SquareColor::Black ) ],
-                       [ Square::new( SquareColor::Black ),
-                         Square::new( SquareColor::White ),
-                         Square::new( SquareColor::Black ),
-                         Square::new( SquareColor::White ),
-                         Square::new( SquareColor::Black ),
-                         Square::new( SquareColor::White ),
-                         Square::new( SquareColor::Black ),
-                         Square::new( SquareColor::White ) ],
-                       [ Square::new( SquareColor::White ),
-                         Square::new( SquareColor::Black ),
-                         Square::new( SquareColor::White ),
-                         Square::new( SquareColor::Black ),
-                         Square::new( SquareColor::White ),
-                         Square::new( SquareColor::Black ),
-                         Square::new( SquareColor::White ),
-                         Square::new( SquareColor::Black ) ] ],
+            squares: [ [ Square::new( SquareColor::Black, Piece::Rook ),
+                         Square::new( SquareColor::White, Piece::Knight ),
+                         Square::new( SquareColor::Black, Piece::Bishop ),
+                         Square::new( SquareColor::White, Piece::Queen ),
+                         Square::new( SquareColor::Black, Piece::King ),
+                         Square::new( SquareColor::White, Piece::Bishop ),
+                         Square::new( SquareColor::Black, Piece::Knight ),
+                         Square::new( SquareColor::White, Piece::Rook ) ],
+                       [ Square::new( SquareColor::White, Piece::Pawn ),
+                         Square::new( SquareColor::Black, Piece::Pawn ),
+                         Square::new( SquareColor::White, Piece::Pawn ),
+                         Square::new( SquareColor::Black, Piece::Pawn ),
+                         Square::new( SquareColor::White, Piece::Pawn ),
+                         Square::new( SquareColor::Black, Piece::Pawn ),
+                         Square::new( SquareColor::White, Piece::Pawn ),
+                         Square::new( SquareColor::Black, Piece::Pawn ) ],
+                       [ Square::new( SquareColor::Black, Piece::None ),
+                         Square::new( SquareColor::White, Piece::None ),
+                         Square::new( SquareColor::Black, Piece::None ),
+                         Square::new( SquareColor::White, Piece::None ),
+                         Square::new( SquareColor::Black, Piece::None ),
+                         Square::new( SquareColor::White, Piece::None ),
+                         Square::new( SquareColor::Black, Piece::None ),
+                         Square::new( SquareColor::White, Piece::None ) ],
+                       [ Square::new( SquareColor::White, Piece::None ),
+                         Square::new( SquareColor::Black, Piece::None ),
+                         Square::new( SquareColor::White, Piece::None ),
+                         Square::new( SquareColor::Black, Piece::None ),
+                         Square::new( SquareColor::White, Piece::None ),
+                         Square::new( SquareColor::Black, Piece::None ),
+                         Square::new( SquareColor::White, Piece::None ),
+                         Square::new( SquareColor::Black, Piece::None ) ],
+                       [ Square::new( SquareColor::Black, Piece::None ),
+                         Square::new( SquareColor::White, Piece::None ),
+                         Square::new( SquareColor::Black, Piece::None ),
+                         Square::new( SquareColor::White, Piece::None ),
+                         Square::new( SquareColor::Black, Piece::None ),
+                         Square::new( SquareColor::White, Piece::None ),
+                         Square::new( SquareColor::Black, Piece::None ),
+                         Square::new( SquareColor::White, Piece::None ) ],
+                       [ Square::new( SquareColor::White, Piece::None ),
+                         Square::new( SquareColor::Black, Piece::None ),
+                         Square::new( SquareColor::White, Piece::None ),
+                         Square::new( SquareColor::Black, Piece::None ),
+                         Square::new( SquareColor::White, Piece::None ),
+                         Square::new( SquareColor::Black, Piece::None ),
+                         Square::new( SquareColor::White, Piece::None ),
+                         Square::new( SquareColor::Black, Piece::None ) ],
+                       [ Square::new( SquareColor::Black, Piece::Pawn ),
+                         Square::new( SquareColor::White, Piece::Pawn ),
+                         Square::new( SquareColor::Black, Piece::Pawn ),
+                         Square::new( SquareColor::White, Piece::Pawn ),
+                         Square::new( SquareColor::Black, Piece::Pawn ),
+                         Square::new( SquareColor::White, Piece::Pawn ),
+                         Square::new( SquareColor::Black, Piece::Pawn ),
+                         Square::new( SquareColor::White, Piece::Pawn ) ],
+                       [ Square::new( SquareColor::White, Piece::Rook ),
+                         Square::new( SquareColor::Black, Piece::Knight ),
+                         Square::new( SquareColor::White, Piece::Bishop ),
+                         Square::new( SquareColor::Black, Piece::Queen ),
+                         Square::new( SquareColor::White, Piece::King ),
+                         Square::new( SquareColor::Black, Piece::Bishop ),
+                         Square::new( SquareColor::White, Piece::Knight ),
+                         Square::new( SquareColor::Black, Piece::Rook ) ] ],
         }
     }
 
     pub fn print( &self ) {
-        for row in self.squares.iter() {
-            for squ in row.iter() {
-                println!( "{}", squ.to_string() );
-            }
+        for row in self.squares.iter().rev() {
+            let res : String = row.iter().fold( String::new(), |res, s| {
+                res + &s.to_string()
+            } );
+            println!( "{}", res );
+            /*for square in row.iter() {
+                println!( "{}", square.to_string() );
+            }*/
         }
     }
 }

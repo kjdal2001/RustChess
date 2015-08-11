@@ -1,9 +1,10 @@
+extern crate ansi_term;
+
 mod board;
 mod players;
 
 use board::Board;
-use players::Player;
-use players::PlayerColor;
+use players::*;
 
 struct Game {
     board: Board,
