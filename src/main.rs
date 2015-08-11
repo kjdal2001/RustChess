@@ -1,70 +1,38 @@
-use std::thread;
-use std::sync::{ Mutex, Arc };
+mod board;
+mod players;
 
-struct Philosopher
-{
-    name: String,
-    left: usize,
-    right: usize,
+use board::Board;
+use players::Player;
+use players::PlayerColor;
+
+struct Game {
+    board: Board,
+    white: Player,
+    black: Player,
 }
 
-impl Philosopher
-{
-    fn new( name: &str, left: usize, right: usize ) -> Philosopher
-    {
-        Philosopher
-        {
-            name: name.to_string(),
-            left: left,
-            right: right,
+impl Game {
+    fn new( white: Player, black: Player) -> Game {
+        Game {
+            board: Board::new(),
+            white: white,
+            black: black,
         }
     }
 
-    fn eat( &self, table: &Table )
-    {
-        let _left = table.forks[ self.left ].lock().unwrap();
-        let _right = table.forks[ self.right ].lock().unwrap();
-        
-        println!( "{} is eating.", self.name );
-
-        thread::sleep_ms( 1000 );
-
-        println!( "{} is done eating.", self.name );
+    pub fn run( &self ) {
+        println!( "Running!!!" );
+        println!( "White: {}", self.white.to_string() );
+        println!( "Black: {}", self.black.to_string() );
+        self.board.print();
     }
-}
-
-struct Table
-{
-    forks: Vec< Mutex< () > >,
 }
 
 fn main()
 {
-    let table = Arc::new( Table { forks: vec![
-        Mutex::new( () ),
-        Mutex::new( () ),
-        Mutex::new( () ),
-        Mutex::new( () ),
-        Mutex::new( () ),
-    ]});
+    let white = Player::new( PlayerColor::White );
+    let black = Player::new( PlayerColor::Black );
 
-    let philosophers = vec![
-        Philosopher::new( "Judith Butler", 0, 1 ),
-        Philosopher::new( "Gilles Deleuze", 1, 2 ),
-        Philosopher::new( "Karl Marx", 2, 3 ),
-        Philosopher::new( "Emma Goldman", 3, 4 ),
-        Philosopher::new( "Michel Foucalt", 4, 0 ),
-    ];
-
-    let handles: Vec< _ > = philosophers.into_iter().map(|p| {
-        let table = table.clone();
-
-        thread::spawn( move || {
-            p.eat( &table );
-        })
-    }).collect();
-
-    for h in handles {
-        h.join().unwrap();
-    }
+    let g = Game::new( white, black );
+    g.run();
 }
