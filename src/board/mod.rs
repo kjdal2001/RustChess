@@ -49,20 +49,82 @@ impl Square {
 }
 
 pub struct Board {
-    squares: [ [ Square; 2 ]; 1 ],
+    squares: [ [ Square; 8 ]; 8 ],
 }
 
 impl Board {
     pub fn new() -> Board {
         Board {
-            squares: [ [ Square::new( SquareColor::Black ), Square::new( SquareColor::White ) ] ],
+            squares: [ [ Square::new( SquareColor::Black ),
+                         Square::new( SquareColor::White ),
+                         Square::new( SquareColor::Black ),
+                         Square::new( SquareColor::White ),
+                         Square::new( SquareColor::Black ),
+                         Square::new( SquareColor::White ),
+                         Square::new( SquareColor::Black ),
+                         Square::new( SquareColor::White ) ],
+                       [ Square::new( SquareColor::White ),
+                         Square::new( SquareColor::Black ),
+                         Square::new( SquareColor::White ),
+                         Square::new( SquareColor::Black ),
+                         Square::new( SquareColor::White ),
+                         Square::new( SquareColor::Black ),
+                         Square::new( SquareColor::White ),
+                         Square::new( SquareColor::Black ) ],
+                       [ Square::new( SquareColor::Black ),
+                         Square::new( SquareColor::White ),
+                         Square::new( SquareColor::Black ),
+                         Square::new( SquareColor::White ),
+                         Square::new( SquareColor::Black ),
+                         Square::new( SquareColor::White ),
+                         Square::new( SquareColor::Black ),
+                         Square::new( SquareColor::White ) ],
+                       [ Square::new( SquareColor::White ),
+                         Square::new( SquareColor::Black ),
+                         Square::new( SquareColor::White ),
+                         Square::new( SquareColor::Black ),
+                         Square::new( SquareColor::White ),
+                         Square::new( SquareColor::Black ),
+                         Square::new( SquareColor::White ),
+                         Square::new( SquareColor::Black ) ],
+                       [ Square::new( SquareColor::Black ),
+                         Square::new( SquareColor::White ),
+                         Square::new( SquareColor::Black ),
+                         Square::new( SquareColor::White ),
+                         Square::new( SquareColor::Black ),
+                         Square::new( SquareColor::White ),
+                         Square::new( SquareColor::Black ),
+                         Square::new( SquareColor::White ) ],
+                       [ Square::new( SquareColor::White ),
+                         Square::new( SquareColor::Black ),
+                         Square::new( SquareColor::White ),
+                         Square::new( SquareColor::Black ),
+                         Square::new( SquareColor::White ),
+                         Square::new( SquareColor::Black ),
+                         Square::new( SquareColor::White ),
+                         Square::new( SquareColor::Black ) ],
+                       [ Square::new( SquareColor::Black ),
+                         Square::new( SquareColor::White ),
+                         Square::new( SquareColor::Black ),
+                         Square::new( SquareColor::White ),
+                         Square::new( SquareColor::Black ),
+                         Square::new( SquareColor::White ),
+                         Square::new( SquareColor::Black ),
+                         Square::new( SquareColor::White ) ],
+                       [ Square::new( SquareColor::White ),
+                         Square::new( SquareColor::Black ),
+                         Square::new( SquareColor::White ),
+                         Square::new( SquareColor::Black ),
+                         Square::new( SquareColor::White ),
+                         Square::new( SquareColor::Black ),
+                         Square::new( SquareColor::White ),
+                         Square::new( SquareColor::Black ) ] ],
         }
     }
 
     pub fn print( &self ) {
         for row in self.squares.iter() {
             for squ in row.iter() {
-                //let x: u8 = squ;
                 println!( "{}", squ.to_string() );
             }
         }
