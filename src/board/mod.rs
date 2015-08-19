@@ -1,24 +1,6 @@
 use ansi_term::Colour;
 use ansi_term::Colour::*;
 
-enum SquareColor {
-    Black,
-    White,
-}
-
-impl SquareColor {
-    fn get_background( &self ) -> Colour {
-        match *self {
-            SquareColor::Black => {
-                Green
-            }
-            SquareColor::White => {
-                Yellow
-            }
-        }
-    }
-}
-
 enum Piece {
     None,
     Pawn,
@@ -52,6 +34,24 @@ impl Piece {
             }
             Piece::King => {
                 "K"
+            }
+        }
+    }
+}
+
+enum SquareColor {
+    Black,
+    White,
+}
+
+impl SquareColor {
+    fn get_background( &self ) -> Colour {
+        match self {
+            SquareColor::Black => {
+                Green
+            }
+            SquareColor::White => {
+                Yellow
             }
         }
     }

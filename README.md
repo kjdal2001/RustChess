@@ -1,4 +1,4 @@
 Chess
 =====
 
-Chess game
+This is a command line chess program written in Rust.
